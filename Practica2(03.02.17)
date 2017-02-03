@@ -1,0 +1,7 @@
+data("AirPassengers")
+class(AirPassengers)
+start(AirPassengers) #cuando inicia la ST
+end(AirPassengers) #cuando finaliza la ST
+frequency(AirPassengers) #datos mensuales, anuales, etc
+summary(AirPassengers) #resumen descriptivo de la ST
+plot(AirPassengers)
