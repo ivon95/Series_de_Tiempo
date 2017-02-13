@@ -1,0 +1,59 @@
+Generar 4 objetos con datos aleatorios y que contengan 60 datos
+prof<-sample(5:8, 60, replace=TRUE)
+pib<-sample(0:5, 60, replace=TRUE)
+ocup<-sample(40:60, 60, replace=TRUE)
+desocup<-sample(3:8, 60, replace=TRUE)
+
+#Crear data.frame
+base<-data.frame(prof,pib,ocup,desocup)
+
+
+#Mostrar los primeros 12 y los últimos 12 datos
+base[1:12,]
+base[49:60,]
+
+#Convertis los objetos en series de tiempo
+prof1<-ts(prof, start=2010, freq=12)
+pib1<-ts(pib, start=2010, freq=12)
+ocup1<-ts(ocup, start=2010, freq=12)
+desocup1<-ts(desocup, start=2010, freq=12)
+
+#########13/02/2017
+seriemult<-ts.intersect(prof1,pib1,ocup1,desocup1)
+plot(seriemult, main="Serie de tiempo múltiple", xlab="años", ylab="numero de personas", col="purple", panel.second=grid(), type='o') #grafica serie de tiempo múltiple
+
+#Dividir serie de tiempo
+seriemult10.12<-window(seriemult, start=c(2010,1), end=c(2012,1))
+seriemult12.15<-window(seriemult, start=c(2012,1), end=c(2014,12))
+
+plot(seriemult10.12, main="Serie de tiempo múltiple", xlab="años", ylab="numero de personas", col="purple", panel.second=grid(), type='o') 
+plot(seriemult12.15, main="Serie de tiempo múltiple", xlab="años", ylab="numero de personas", col="purple", panel.second=grid(), type='o') 
+start(seriemult); end(seriemult)
+
+##Ejercicio
+#Importar 4 series de tiempo con un mínimo de 30 datos
+#Las series de tiempo deben de tener un sustento para compararlas
+#Importarlas, declararlas ST, graficar individual y en conjunto
+#Crear serie de tiempo multiple y graficarla con formato
+#Dividirla en 3 periodos con intervalos iguales
+
+#TRABAJADORES SUBORDINADOS Y REMUNERADOS POR SECTOR DE LA ACTIVIDAD ECONOMICA:
+trabajadores<-ts(read.csv(("C:\\Users\\Sala-D\\Desktop\\TRABAJADORES.csv")),frequency=4,start=(2005))
+
+primario<-ts(trabajadores[,1], start=2005, freq=4)
+secundario<-ts(trabajadores[,2], start=2005, freq=4)
+terciario<-ts(trabajadores[,3], start=2005, freq=4)
+ne<-ts(trabajadores[,4], start=2005, freq=4)
+
+
+plot(primario, xlim=c(2005,2010))
+plot(secundario, xlim=c(2005,2010))
+plot(terciario, xlim=c(2005,2010))
+plot(ne, xlim=c(2005,2010))
+
+seriemult<-ts.intersect(primario,secundario,terciario,ne)
+seriemult05.07<-window(seriemult, start=c(2005,1), end=c(2008,2))
+seriemult07.10<-window(seriemult, start=c(2008,2), end=c(2010,4))
+
+plot(seriemult05.07, main="Serie de tiempo múltiple", xlab="años", ylab="numero de personas", col="purple", panel.second=grid(), type='o') 
+plot(seriemult07.10, main="Serie de tiempo múltiple", xlab="años", ylab="numero de personas", col="purple", panel.second=grid(), type='o') 
