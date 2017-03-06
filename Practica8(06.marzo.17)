@@ -1,0 +1,24 @@
+install.packages("fpp")
+require(fpp)
+plot(window(elec, start=1980), ylab="GWh", xlab="Year", main="Australian electricity production")
+##Estacionariedad, tendencia, ciclico
+seasonplot(elec, s=12,main="Electricity",ylab="año", year.labels=TRUE, col=rainbow(15),year.labels.left=TRUE, pch=15)
+##################
+plot(bricksq, ylab="million units", xlab="year", main="Australian clay brick production")
+##Estacionariedad y ciclo, no mucho tendencia
+seasonplot(bricksq, s=4,main="Brick",ylab="año", year.labels=TRUE, col=rainbow(15),year.labels.left=TRUE, pch=15)
+dec<- decompose(bricksq)
+#eliminando tendencia
+sinesta<-bricksq-dec$seasonal
+sinted<--bricksq-dec$trend
+plot(sinesta)
+plot(sinted)
+#################
+plot(hsales, main="Sales of new one-family houses, USA", ylab="Total sales", xlab="year")
+seasonplot(hsales, s=12,main="Electricity",ylab="año", year.labels=TRUE, col=rainbow(15),year.labels.left=TRUE, pch=15)
+##No estacionariedad ni tendencia posible ciclo
+
+###############TAREA
+Analizar el %PIB Anual 1960-1979
+Interpretación general de la gráfica
+http://www.mexicomaxico.org/Voto/PIBMex.htm
