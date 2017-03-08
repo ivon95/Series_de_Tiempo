@@ -1,0 +1,22 @@
+#Para descomponer una ST en un modelo aditivo
+deso<-data.frame(read.csv("C:\\Users\\Sala-D2\\Downloads\\tarea2.csv"))
+desot<-ts(deso, frequency=4, start=2005)
+plot(desot)
+lines(eeadj, col="purple")
+dectsd<-decompose(desot)
+dectsdmul<-decompose(desot, type="mult")#aquí esta el multiplicativo
+
+##Graficar modelos
+plot(dectsd)
+plot(dectsdmul)
+
+
+#Desestacionalizar una serie
+#Una ST se desestacionaliza por varias razones, entre las que destacan:
+#Predecir datos con mayor presición, sin contar con factores externos
+#al comportamientos de nuestros datos
+
+require(fpp)
+eeadj<-seasadj(dectsd)
+plot(eeadj)
+sinesta<-desot-dectsd$seasonal
