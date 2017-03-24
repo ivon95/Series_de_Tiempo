@@ -1,0 +1,27 @@
+desoc<-read.csv("C:\\Users\\Sala-D2\\Downloads\\tarea2.csv")
+desocts<-ts(desoc)
+install.packages("forecast")
+require(forecast)
+#METODO DE LA DERIVA
+#este método consiste en que el pronóstivo puede incrementar o reducirse sobre el tiempo
+#dependiendo del promedio de los cambios históricos de la st
+#rwf(serie, h=num de pronostico, drift=TRUE)
+
+rwf(desoc, h=4, drift=TRUE)
+desocmod1<-meanf(desocts, h=12) #metodo del promedio
+desocmod2<-naive(desocts, h=4)
+desocmod3<-snaive(desocts, h=4)
+desocmod4<-rwf(desocts, h=4, drift=T)
+
+x11() #abrir nueva ventana
+plot(desocmod1, main="Pronóstico de desocupación trimestral")
+lines(desocmod2$mean, col=5) #mean=pronóstico
+lines(desocmod3$mean, col=6)
+lines(desocmod4$mean, col=7)
+legend("topright", lty=1, col=c(5,6,7,8), legend=c("media", "ingenuo", "ingenuo estacional", "deriva"))
+
+names(desocmod2)
+
+
+TAREA
+##1. cortar serie de tiempo 2005-2010->ST, 2011-2015->REALES
