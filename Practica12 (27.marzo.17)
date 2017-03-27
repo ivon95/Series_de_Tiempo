@@ -1,0 +1,25 @@
+asa<-read.csv("C:\\Users\\Sala-D2\\Desktop\\asala.csv", header=T) [7,2:49]
+
+asa1<-t(asa)
+asa2<-as.numeric(asa1)
+asats<-ts(asa2, start=2005, frequency=4)
+
+install.packages("forecast")
+require(forecast)
+#SUAVIZADO EXPONENCIAL SIMPLE
+#alpha: parametro que suaviza la serie
+#initial=simple: modo de pronostico
+#h: numero de pronósticos
+mod1<-ses(asats, alpha=.1, initial="simple", h=8)
+mod2<-ses(asats, alpha=.3, initial="simple", h=8)
+mod3<-ses(asats, alpha=.95,initial="simple", h=8)
+
+x11()
+plot(mod1, ylab="asalariados", xlab="año", main="Asalariados", type="o")
+lines(mod1$fitted, col="brown", type="o")
+lines(mod2$fitted, col="red", type="o")
+lines(mod3$fitted, col="green", type="o")
+lines(mod1$mean, col="brown", type="o")
+lines(mod2$mean, col="brown", type="o")
+lines(mod3$mean, col="brown", type="o")
+legend("topleft", lty=1, col=c(1,"blue", "red", "green"),c("datos", expression(alpha==0.1),expression(alpha==0.3), expression(alpha==0.95)))
