@@ -1,0 +1,31 @@
+desoc<-read.csv("C:\\Users\\raquel\\Downloads\\tarea2.csv")
+desocts<-ts(desoc, frequency=4, start=2005)
+desocts
+
+#Cortar serie
+desoc1<-desoc[1:24,]
+desoc1ts<-ts(desoc1, frequency=4,start=2005)
+desoc1ts
+
+desoc2<-desoc[25:48,]
+desoc2ts<-ts(desoc2, frequency=4,start=2011)
+desoc2ts
+
+#Pronosticos
+install.packages("forecast")
+require(forecast)
+
+p1<-meanf(desoc1ts, h=24)
+p2<-naive(desoc1ts, h=24)
+p3<-snaive(desoc1ts, h=24)
+p4<-rwf(desoc1ts, h=24, drift=TRUE)
+
+#Grafica
+X11()
+plot(p1, main="Desocupación 2005-2016", xlab="año", ylab="tasa de desocupación", col="gold")
+lines(p2$mean, col="purple")
+lines(p3$mean, col="red")
+lines(p4$mean, col="orange")
+lines(desoc2ts,col="black")
+
+legend("topleft", lty=1, col=c("gold","purple","red","orange","black"),legend=c("media", "ingenuo", "ingenuo estacional", "deriva", "real"))
