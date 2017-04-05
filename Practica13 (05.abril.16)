@@ -1,0 +1,26 @@
+require(foreign)
+coe216<-read.dbf("C:\\Users\\Sala-D2\\Documents\\coe2t116.dbf")
+ls(coe216) #muestra las variables que contiene la BD
+
+coe216$P6D<-as.numeric(as.character(coe216$P6D))
+coesins<-subset(coe216, coe216$P6D==1 |coe216$P6D==2 |coe216$P6D==3 |coe216$P6D==4 |coe216$P6D==5)
+
+coe216$sinseg<-ifelse(coe216$P6D>=1 & coe216$P6D<=5, 1, ifelse(coe216$P6D>=6 & coe216$P6D<=9,2,0))
+#crea una nueva variable, si p6d va de 1 a 5 lo llama 1, si va de 6 a 9 se renombra 2, y al resto 0
+table(coe216$sinseg)
+
+
+###EJERCICIO: HACER LA VARIABLE DESOCUPADOS 
+coe116<-read.dbf("C:\\Users\\Sala-D2\\Documents\\coe1t116.dbf")
+coe116$P1c<-as.numeric(as.character(coe116$P1c))
+coe116$P1b<-as.numeric(as.character(coe116$P1b))
+coe116$P2_1<-as.numeric(as.character(coe116$P2_1))
+coe116$P2_2<-as.numeric(as.character(coe116$P2_2))
+coe116$P2_3<-as.numeric(as.character(coe116$P2_3))
+coe116$P2b<-as.numeric(as.character(coe116$P2b))
+coe116$p2c<-as.numeric(as.character(coe116$p2c))
+coe116$P1d<-as.numeric(as.character(coe116$P1d))
+
+coe116$deso<-ifelse(coe116$P1c==11,1, ifelse((coe116$P1b==2) & (coe116$P2_1==1 | coe116$P2_2==2 | coe116$P2_3==3) & (coe116$P2b==1) & (coe116$p2c!=2 & coe116$p2c!=9),2, ifelse((coe116$P1d==2 | coe116$P1d==9) & (coe116$P2_1==1 |coe116$P2_2=2 | coe116$P2_3==3) & (coe116$P2b==1) & (coe116$p2c!=2 & coe116$p2c!=9),3,0 )))
+
+
