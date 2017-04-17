@@ -1,0 +1,29 @@
+ica<-read.csv("C:\\Users\\Sala-D2\\Desktop\\ica.csv")
+icats<-ts(ica, frequency=261, start=2016)
+require(fpp)
+mod1<-ses(icats,alpha=.2,initial="simple",h=8)
+mod2<-ses(icats,alpha=.4,initial="simple",h=8)
+mod3<-ses(icats,alpha=.6,initial="simple",h=8)
+mod4<-ses(icats,alpha=.8,initial="simple",h=8)
+plot(icats,ylab="ICA",xlab="día",main="pib",lty=1)
+lines(fitted(mod1),col="brown",lty=10)
+lines(fitted(mod2),col="red",lty=10)
+lines(fitted(mod3),col="green",lty=10)
+lines(fitted(mod4),col="blue",lty=10)
+#El que mejor se ajusta es el modelo 4, con alfa=0.8
+
+
+###MAE y RMSE con funcion
+evalm1<-accuracy(mod1);evalm2<-accuracy(mod2);evalm3<-accuracy(mod3);evalm4<-accuracy(mod4)
+evalm1;evalm2;evalm3;evalm4
+
+x1<-evalm1[,2:3]
+x2<-evalm2[,2:3]
+x3<-evalm3[,2:3]
+x4<-evalm4[,2:3]
+x<-cbind(x1,x2,x3,x4)
+x
+minmae<-min(x[2,])
+minrmse<-min(x[1,])
+
+minimos<-cbind(minmae,minrmse)
