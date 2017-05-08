@@ -1,0 +1,15 @@
+x<-sample(300:900,252)
+xts<-ts(x, frequency=252, start=2016)
+x11()
+acf(xts) 
+plot(xts)
+###no hay relacion entre sus datos: ruido blanco
+
+ica<-read.csv("C:\\Users\\Sala-D2\\Desktop\\ica0617.csv")
+icats<-ts(ica, frequency=252, start=2006)
+acf(icats)
+#No hay ruido blanco
+
+##Investigar como hacer diferenciación en la serie de ICA
+##con función en R
+##Hacer la diferenciación en R y manual de los primeros 10 datos
