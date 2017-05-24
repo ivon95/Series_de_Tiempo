@@ -1,0 +1,109 @@
+################BIMBO
+bimbo<-read.csv("C:\\Users\\Sala-D2\\Desktop\\BIMBO.csv")
+bimbots<-ts(bimbo, start=2016, frequency=260)
+plot(bimbots)
+
+library(fpp)
+##	1) Revisar si la serie es estacionaria
+##Para esto se aplica la prueba de raíz unitaria a través de la función
+##adf.test y esperamos que p-value sea menor a .05
+
+adf.test(bimbots)
+
+#p-value=.7607
+#aplicamos [diff (diferenciación)] la primera diferenciación debido a que la serie
+#original no es estacionaria
+
+dbimbots<-diff(bimbots)
+adf.test(dbimbots)
+
+#ARIMA(p,d,q)->ARIMA(p,1,q): aplicamos 1 diferenciación y con esta se volvió estacionaria
+
+acf(dbimbots)
+#q=número de franjas que sobrepasan las líneas=número de orden de promedios móviles
+#ARIMA(p,d,q)->ARIMA(p,1,3)
+
+#Para determinar orden de p: modelo auto regresivo se utiliza la función pacf()
+pacf(dbimbots)
+#p=número de franjas que sobrepasan las líneas=número de orden de auto regresivo
+#ARIMA(p,d,q)->ARIMA(2,1,3)
+
+#Por lo que se propone un modelo ARIMA(2,1,3)
+
+modbimbo<-Arima(bimbots, order=c(2,1,3))
+#AICc=654.3
+
+#Si se hacen varios modelos nos quedaremos con el que el AICc sea menor
+
+modres<-residuals(modbimbo)
+Box.test(modres, lag=12, type="Ljung-Box")
+#p-value=.76
+#p-value grande sugiere residuales con ruidos blancos
+#->Cumple supuesto de independencia de los residuales
+
+mod1<-forecast(modbimbo, h=12)
+x11()
+plot(mod1, include=25)
+#include: grafica solo los últimos 18 datos
+
+summary(mod1)
+auto.arima(bimbots)
+modbimbo2<-Arima(bimbots, order=c(1,1,2))
+#AICc=651.23
+
+modres2<-residuals(modbimbo2)
+Box.test(modres2, lag=12, type="Ljung-Box")
+#p-value=.76modres<-residuals(modbimbo)
+Box.test(modres, lag=12, type="Ljung-Box")
+#p-value=.63
+
+mod2<-forecast(modbimbo2, h=12)
+x11()
+plot(mod2, include=25)
+
+
+
+#########CEMEX
+cemex<-read.csv("C:\\Users\\raquel\\Desktop\\cemex.csv")
+cemexts<-ts(cemex, frequency=252, start=2016)
+plot(cemexts)
+
+install.packages("fpp")
+library(fpp)
+
+adf.test(cemexts)
+#p-value=.8104 -> la serie no es estacionaria y debemos aplicar diferenciación
+
+dcemexts<-diff(cemexts)
+adf.test(dcemexts)
+#p-value=.01 -> la serie es estacionaria, hasta el momento ARIMA(p,1,q)
+
+acf(dcemexts)
+#q=2 -> ARIMA(2,1,q)
+
+pacf(dcemexts)
+#p=0 -> ARIMA(2,1,0)
+
+modcemex<-Arima(cemexts, order=c(2,1,0))
+#AICc=151.49
+
+rescemex<-residuals(modcemex)
+Box.test(rescemex, lag=12, type="Ljung-Box")
+#p-value=.5132
+
+mod3<-forecast(modcemex, h=12)
+x11()
+plot(mod3, include=10)
+
+auto.arima(cemexts)
+#Propone, ARIMA(0,1,0) con AICc=149.47, menor al AICc del modelo anterior
+
+modcemex2<-Arima(cemexts, order=c(0,1,0))
+res2cemex<-residuals(modcemex2)
+Box.test(res2cemex, lag=12, type="Ljung-Box")
+#p-value=.4466 menor al AICc del modelo anterior.
+
+mod4<-forecast(modcemex2, h=12)
+x11()
+plot(mod4, include=10)
+
